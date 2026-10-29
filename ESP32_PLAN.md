@@ -40,6 +40,37 @@ ein fehlgeschlagener Ping ist aber kein Beleg für einen abgeschlossenen
 Shutdown. Dafür sind ein verlässliches Abschaltsignal und eine unabhängige
 Versorgung des ESP zu planen.
 
+## Festgelegte Richtung und Hardwareprofile
+
+Der Controller soll unabhängig von Home Assistant arbeiten. Die Tastenanzahl
+wird nicht im BLE-Treiber fest verdrahtet. Eingänge bekommen Zuordnungen zu
+Kanal-Ein/Aus/Umschalten, Warnblinker, RGB oder Abschaltanforderung. Taster
+und rastende Schalter benötigen unterschiedliche Eingangsregeln.
+
+Vorgesehene Profile sind ein ESP32-S3 mit 3x4-Tastenmatrix für zwölf Eingänge
+und eine Variante mit vier GPIO-Eingängen, beispielsweise für einen geeigneten
+Shelly Plus i4 DC. Beide verwenden denselben Protokollbaustein, aber ein
+jeweils passend kompiliertes Firmware-Image. Ein i4 DC hat vier Eingänge für
+externe Tasten/Schalter; er ist kein fertiges Gerät mit vier eingebauten Tasten.
+Die genaue Pinbelegung und die BLE-Client-Funktion sind am ausgewählten Modell
+zu verifizieren. Der i4 DC verwendet laut Hersteller ESP32-U4WDH und 5–24 V DC.
+
+Als fertig aufgebauter weiterer Kandidat existiert DeepDeck mit ESP32 und
+16 mechanischen Tasten. Davon könnten zwölf die Kanäle bedienen und vier
+Zusatzfunktionen auslösen. Dafür wäre ebenfalls angepasste Firmware nötig.
+Ein beliebiges Bluetooth-Makropad mit Tastaturprofil kann die GATT-Befehle des
+Panels nicht ohne Weiteres senden.
+
+Bei mehreren Bediengeräten ist zusätzlich eine zentrale BLE-Gateway-Rolle
+sinnvoll. Weitere Geräte senden ihre Befehle direkt an diesen Controller,
+ohne einen auf dem HA-Rechner laufenden Dienst vorauszusetzen. Damit gibt es
+nur einen Bluetooth-Besitzer und eine zentrale Reihenfolge der Zustandsänderungen.
+Das lokale Transportprotokoll wird erst im nächsten Entwurf festgelegt.
+
+Referenzen: [Matrix-Keypad](https://esphome.io/components/matrix_keypad/),
+[Shelly Plus i4 DC](https://www.shelly.com/it/products/shelly-plus-i4-dc),
+[DeepDeck](https://github.com/DeepSea-Developments/DeepDeck.Ahuyama.fw).
+
 ## Noch zu entscheiden
 
 Welches ESP32-Board steht zur Verfügung? Welche lokalen Bedienelemente werden
