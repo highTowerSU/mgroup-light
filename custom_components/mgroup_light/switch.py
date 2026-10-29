@@ -52,6 +52,7 @@ class MgroupSwitch(MgroupBaseSwitch):
             "channel": self.channel,
             "panel_mode": state.channels[self.channel - 1] >> 1,
             "panel_master_on": state.master_on,
+            "shutdown_protected": self.channel == getattr(self.coordinator, "power_channel", 0),
         }
 
     async def async_turn_on(self, **kwargs) -> None:

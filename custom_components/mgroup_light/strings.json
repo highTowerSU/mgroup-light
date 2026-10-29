@@ -52,7 +52,7 @@
     "step": {
       "init": {
         "title": "Channel names",
-        "description": "Labels are stored in Home Assistant. The panel and its operating modes are unchanged.",
+        "description": "Configure channel names and shutdown requests. Turning the HA power channel off in software only fires an event. The separate request channel fires the same event when switched on. Use an automation to shut down. Physical power-off cannot be prevented.",
         "data": {
           "channel_1": "Channel 1",
           "channel_2": "Channel 2",
@@ -65,7 +65,25 @@
           "channel_9": "Channel 9",
           "channel_10": "Channel 10",
           "channel_11": "Channel 11",
-          "channel_12": "Channel 12"
+          "channel_12": "Channel 12",
+          "power_channel": "HA power channel (0 = none)",
+          "shutdown_channel": "Shutdown request channel (0 = none)",
+          "strompi2_gpio21": "Monitor StromPi 2 on local GPIO 21 (requires T-PIN connection)"
+        }
+      }
+    },
+    "error": {
+      "same_power_and_shutdown_channel": "Power and request must use different channels."
+    }
+  },
+  "entity": {
+    "select": {
+      "channel_mode": {
+        "state": {
+          "constant": "Constant",
+          "momentary": "Momentary",
+          "flash": "Flash",
+          "strobe": "Strobe"
         }
       }
     }

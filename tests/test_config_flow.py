@@ -109,3 +109,22 @@ class ConfigFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result['data'], {'address': self.address})
         self.assertEqual(result['options']['channel_names'][0], 'Licht 1')
         self.assertEqual(result['options']['channel_names'][4], 'Kanal 5')
+
+    async def test_shutdown_options_reject_shared_power_and_request_channel(self):
+        flow = self.module.MgroupOptionsFlow()
+        flow.config_entry = types.SimpleNamespace(options={})
+        payload = {f'channel_{i}': f'Kanal {i}' for i in range(1, 13)}
+        payload.update(power_channel=3,shutdown_channel=3,strompi2_gpio21=True)
+        result = await flow.async_step_init(payload)
+        self.assertEqual(result['errors']['base'],'same_power_and_shutdown_channel')
+
+    async def test_shutdown_options_preserve_other_settings(self):
+        flow = self.module.MgroupOptionsFlow()
+        flow.config_entry = types.SimpleNamespace(options={'future_setting':'keep'})
+        payload = {f'channel_{i}': f'Kanal {i}' for i in range(1, 13)}
+        payload.update(power_channel=3,shutdown_channel=5,strompi2_gpio21=True)
+        result = await flow.async_step_init(payload)
+        self.assertEqual(result['data']['power_channel'],3)
+        self.assertEqual(result['data']['shutdown_channel'],5)
+        self.assertTrue(result['data']['strompi2_gpio21'])
+        self.assertEqual(result['data']['future_setting'],'keep')

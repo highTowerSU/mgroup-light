@@ -10,7 +10,7 @@ from homeassistant.components import bluetooth
 from homeassistant import config_entries
 from homeassistant.core import callback
 
-from .const import CONF_CHANNEL_NAMES, DEFAULT_NAMES, DOMAIN, MODEL
+from .const import CONF_CHANNEL_NAMES, DEFAULT_NAMES, DOMAIN, MODEL, CONF_POWER_CHANNEL, CONF_SHUTDOWN_CHANNEL, CONF_STROMPI2
 from .coordinator import async_panel_service_info, create_panel
 
 
@@ -110,14 +110,25 @@ class MgroupConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class MgroupOptionsFlow(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
+        errors = {}
         if user_input is not None:
-            names = [user_input[f"channel_{i}"].strip() or DEFAULT_NAMES[i - 1] for i in range(1, 13)]
-            return self.async_create_entry(title="", data={CONF_CHANNEL_NAMES: names})
+            power = user_input.get(CONF_POWER_CHANNEL, 0)
+            shutdown = user_input.get(CONF_SHUTDOWN_CHANNEL, 0)
+            if power and power == shutdown:
+                errors["base"] = "same_power_and_shutdown_channel"
+            else:
+                names = [user_input[f"channel_{i}"].strip() or DEFAULT_NAMES[i - 1] for i in range(1, 13)]
+                return self.async_create_entry(title="", data={
+                    **self.config_entry.options, CONF_CHANNEL_NAMES: names,
+                    CONF_POWER_CHANNEL: power, CONF_SHUTDOWN_CHANNEL: shutdown,
+                    CONF_STROMPI2: user_input.get(CONF_STROMPI2, False),
+                })
         names = self.config_entry.options.get(CONF_CHANNEL_NAMES, DEFAULT_NAMES)
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema({
-                vol.Required(f"channel_{i}", default=names[i - 1]): str
-                for i in range(1, 13)
-            }),
-        )
+        fields = {
+            vol.Required(f"channel_{i}", default=names[i - 1]): str
+            for i in range(1, 13)
+        }
+        for key in (CONF_POWER_CHANNEL, CONF_SHUTDOWN_CHANNEL):
+            fields[vol.Required(key, default=self.config_entry.options.get(key, 0))] = vol.In(list(range(13)))
+        fields[vol.Required(CONF_STROMPI2, default=self.config_entry.options.get(CONF_STROMPI2, False))] = bool
+        return self.async_show_form(step_id="init", data_schema=vol.Schema(fields), errors=errors)

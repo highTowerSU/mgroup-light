@@ -1,0 +1,41 @@
+blueprint:
+  name: Mgroup Panel – Home Assistant sauber herunterfahren
+  description: >-
+    Reagiert auf eine Abschaltanforderung des Panels. Der konfigurierte
+    Versorgungskanal wird nicht ausgeschaltet. Optional wird der separate,
+    unbeschaltete Anforderungskanal zurückgesetzt. Danach fährt HA OS herunter.
+    Nach dem Herunterfahren kann HA keine Bluetooth-Befehle mehr senden.
+  domain: automation
+  input:
+    panel_address:
+      name: Bluetooth-Adresse des Panels
+      selector:
+        text:
+    request_switch:
+      name: Anforderungskanal (optional)
+      description: Nur einen Ausgang wählen, der keine Verbraucher versorgt.
+      default: []
+      selector:
+        entity:
+          filter:
+            - domain: switch
+          multiple: true
+mode: single
+max_exceeded: silent
+variables:
+  request_switch: !input request_switch
+triggers:
+  - trigger: event
+    event_type: mgroup_light_shutdown_requested
+    event_data:
+      address: !input panel_address
+conditions: []
+actions:
+  - if:
+      - condition: template
+        value_template: "{{ request_switch | length > 0 }}"
+    then:
+      - action: switch.turn_off
+        target:
+          entity_id: !input request_switch
+  - action: hassio.host_shutdown

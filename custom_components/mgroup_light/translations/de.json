@@ -52,7 +52,7 @@
     "step": {
       "init": {
         "title": "Kanalnamen",
-        "description": "Die Namen werden in Home Assistant gespeichert. Panel und Betriebsarten werden nicht verändert.",
+        "description": "Kanalnamen und Abschaltanforderung konfigurieren. Ausschalten des HA-Versorgungskanals per Software löst nur ein Ereignis aus. Der separate Anforderungskanal löst beim Einschalten ebenfalls ein Ereignis aus. Zum Herunterfahren eine Automation verwenden. Physische Abschaltung wird nicht verhindert.",
         "data": {
           "channel_1": "Kanal 1",
           "channel_2": "Kanal 2",
@@ -65,7 +65,25 @@
           "channel_9": "Kanal 9",
           "channel_10": "Kanal 10",
           "channel_11": "Kanal 11",
-          "channel_12": "Kanal 12"
+          "channel_12": "Kanal 12",
+          "power_channel": "HA-Versorgungskanal (0 = keiner)",
+          "shutdown_channel": "Abschaltanforderung über Kanal (0 = keiner)",
+          "strompi2_gpio21": "StromPi 2 an lokalem GPIO 21 überwachen (T-PIN-Verbindung erforderlich)"
+        }
+      }
+    },
+    "error": {
+      "same_power_and_shutdown_channel": "Versorgung und Anforderung müssen unterschiedliche Kanäle sein."
+    }
+  },
+  "entity": {
+    "select": {
+      "channel_mode": {
+        "state": {
+          "constant": "Dauerbetrieb",
+          "momentary": "Momenttaster",
+          "flash": "Blinken (Flash)",
+          "strobe": "Stroboskop"
         }
       }
     }

@@ -5,3 +5,9 @@ MODEL = "MG-P1SR-12P"
 CONTROL_UUID = "0003cbbb-0000-1000-8000-00805f9beffa"
 CONF_CHANNEL_NAMES = "channel_names"
 DEFAULT_NAMES = tuple(f"Kanal {i}" for i in range(1, 13))
+
+MODE_OPTIONS = ("constant", "momentary", "flash", "strobe")
+CONF_POWER_CHANNEL = "power_channel"
+CONF_SHUTDOWN_CHANNEL = "shutdown_channel"
+EVENT_SHUTDOWN_REQUESTED = "mgroup_light_shutdown_requested"
+CONF_STROMPI2 = "strompi2_gpio21"

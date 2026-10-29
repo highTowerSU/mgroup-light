@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 
 from .coordinator import MgroupCoordinator
 
-PLATFORMS = [Platform.SWITCH]
+PLATFORMS = [Platform.SWITCH, Platform.SELECT, Platform.LIGHT, Platform.BUTTON, Platform.BINARY_SENSOR]
 MgroupConfigEntry = ConfigEntry[MgroupCoordinator]
 
 

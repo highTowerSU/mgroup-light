@@ -2,7 +2,7 @@
 
 Lokale Bluetooth-Integration für das **MG-P1SR-12P**. Zwölf Kanalschalter und ein gemeinsamer Warnblinker mit
 konfigurierbaren Kanalnamen, Zustandsrückmeldungen und Wiederverbindung.
-Aktuelles Installationspaket: [mgroup_light-0.3.0.zip](https://github.com/highTowerSU/mgroup-light/releases/download/v0.3.0/mgroup_light-0.3.0.zip).
+Aktuelles Installationspaket: [mgroup_light-0.4.1.zip](https://github.com/highTowerSU/mgroup-light/releases/download/v0.4.1/mgroup_light-0.4.1.zip).
 Getestetes Zielsystem: Home Assistant OS, Core 2026.10.4, lokaler Bluetooth-Adapter.
 Unterstützt wird das Modell MG-P1SR-12P mit zwölf Kanälen.
 
@@ -27,6 +27,64 @@ Bei Funkverlust werden die Entitäten als nicht verfügbar angezeigt.
 Fehlgeschlagene Schaltbefehle werden nicht automatisch wiederholt.
 Wird das Panel im passiven Scan nicht gefunden, fordert die Integration bei HA
 ein aktives Suchfenster ausschließlich für seine Adresse an (bis zu 25 Sekunden).
+
+## Betriebsarten und Beleuchtung
+
+Jeder Kanal hat eine Betriebsart-Auswahl: **Dauerbetrieb**, **Momenttaster**,
+**Blinken (Flash)** oder **Stroboskop**. Der Kanal muss beim Ändern ausgeschaltet
+sein. Der konfigurierte HA-Versorgungskanal ist zusätzlich gegen Änderungen der
+Betriebsart geschützt. Die übrigen Kanalzustände bleiben erhalten.
+
+Die Entität **Tastenbeleuchtung** liest die gemeinsame RGB-Palette und die
+Helligkeit über F1–F4 ein. Eine einzelne Farbe wird als RGB-Farbe angezeigt;
+bei einer Palette mit mehreren Farben steht die vollständige Palette in den
+Attributen. Der momentan sichtbare Farbton eines laufenden Farbwechsels wird
+vom Protokoll nicht als Messwert gemeldet. Eine Farbauswahl setzt eine statische
+RGB-Farbe. Ein/Aus der Beleuchtung verändert deren Helligkeit und erhält den
+Geräte-Power-Status. Fehlende RGB-Rückmeldung macht nur die Lichtentität
+unverfügbar. Schreibbefehle werden anschließend zurückgelesen.
+
+## Abschaltanforderung für Home Assistant
+
+Unter **Konfigurieren** lassen sich zwei optionale Kanäle wählen (0 = deaktiviert):
+
+- **HA-Versorgungskanal:** Ein Software-Ausschaltbefehl erzeugt ausschließlich
+  `mgroup_light_shutdown_requested` und lässt den Ausgang eingeschaltet.
+- **Anforderungskanal:** Ein beobachteter Wechsel von aus nach ein erzeugt
+  dasselbe Ereignis. Dafür einen unbeschalteten Ausgang verwenden. Auch ein
+  Schaltbefehl aus der App kann den Wechsel verursachen; das Protokoll meldet
+  keine eindeutige Herkunft des Tastendrucks.
+
+Zusätzlich gibt es **Herunterfahren anfordern** als Button-Entität. Die Integration
+führt selbst keinen Host-Shutdown aus. Das übernimmt eine Automation, zum
+Beispiel der [mitgelieferte Blueprint](blueprints/automation/mgroup_light/shutdown_request.yaml).
+Das Ereignis enthält `address`, `source` und `channel`. Die erste Zustandsmeldung
+nach Start oder Wiederverbindung löst keine Abschaltanforderung aus.
+
+Ein physischer Schaltvorgang am stromversorgenden Ausgang lässt sich über
+Bluetooth nicht abfangen. Nach `hassio.host_shutdown` kann HA selbst keinen
+nachfolgenden Bluetooth-Ausschaltbefehl mehr ausführen. Zum Puffern oder
+anschließenden Trennen der Versorgung ist unabhängige Hardware nötig.
+
+## Optionale StromPi-2-Anzeige
+
+**Konfigurieren → StromPi 2 an lokalem GPIO 21 überwachen** ergänzt ein eigenes
+Gerät **StromPi 2** mit dem Binärsensor **USV-Signal**. Es werden ausschließlich
+die Eingangsregister von BCM21 über `/dev/gpiomem` gelesen; Pinmodus und Ausgänge
+werden nicht verändert. Der T-PIN-Jumper muss tatsächlich mit BCM21 verbunden
+sein. High bedeutet dann fehlende Micro-USB-Primärversorgung. Ohne diese
+Verbindung kann ein Pegel keine zuverlässige Aussage zur Stromversorgung liefern.
+
+Diese optionale Anzeige ist für Raspberry Pis mit der älteren gpiomem-Schnittstelle
+vorgesehen, getestet auf einem Pi 3. Ohne Zugriff auf `/dev/gpiomem` bleibt sie
+unverfügbar. Es werden keine Spannungs-, Strom- oder Akkustandswerte erfunden.
+Die Überwachung löst selbst keinen Shutdown aus. Insbesondere bei Betrieb allein
+über den Weitbereichseingang darf High keine automatisch aktivierte
+Ausfall-Automation auslösen. Die Eingangspriorität und ein Abschalttimer sind beim
+StromPi 2 nicht per Software einstellbar; siehe [Herstelleranleitung](https://www.joy-it.net/files/files/Produkte/RB-StromPI2/Anleitung-Strompi2.pdf).
+
+Der [StromPi-2-Aufbauvorschlag](STROMPI2.md) beschreibt die Versorgung über
+dauerhafte 12 V und eine zusätzliche geschaltete 5-V-Quelle.
 
 ## Installation über die Weboberfläche
 
@@ -85,7 +143,7 @@ python3 -m unittest discover -s tests -v
 python3 -m compileall -q custom_components tools
 ```
 
-Die 30 Tests verwenden echte zuvor gelesene Telegramme sowie einen simulierten
+Die 64 Tests verwenden echte zuvor gelesene Telegramme sowie einen simulierten
 Bluetooth-Transport. Sie prüfen insbesondere Betriebsarterhaltung,
 gleichzeitige Kanalbefehle, Verbindungsabbrüche, fehlende Rückmeldungen und die
 aktive Suche bei fehlender oder veralteter Gerätesichtung.

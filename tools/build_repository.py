@@ -18,9 +18,9 @@ def build(repository: str, output: Path | None = None) -> Path:
     manifest_path = root / 'custom_components/mgroup_light/manifest.json'
     manifest = json.loads(manifest_path.read_text())
     manifest.update(documentation=url+'#readme', issue_tracker=url+'/issues', codeowners=['@'+owner])
-    sources = [root/'README.md', root/'hacs.json', root/'requirements-test.txt']
-    for directory in ('custom_components/mgroup_light', 'tests', 'tools'):
-        sources.extend(p for p in (root/directory).rglob('*') if p.is_file() and p.suffix in {'.py', '.json'})
+    sources = [root/'README.md', root/'hacs.json', root/'requirements-test.txt', root/'STROMPI2.md']
+    for directory in ('custom_components/mgroup_light', 'tests', 'tools', 'blueprints'):
+        sources.extend(p for p in (root/directory).rglob('*') if p.is_file() and p.suffix in {'.py', '.json', '.yaml'})
     with ZipFile(output, 'w', ZIP_DEFLATED) as archive:
         for source in sorted(sources):
             name = source.relative_to(root).as_posix()
