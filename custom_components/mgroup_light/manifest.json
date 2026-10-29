@@ -1,0 +1,23 @@
+{
+  "domain": "mgroup_light",
+  "name": "Mgroup Panel",
+  "version": "0.3.0",
+  "config_flow": true,
+  "integration_type": "device",
+  "dependencies": [
+    "bluetooth"
+  ],
+  "bluetooth": [
+    {
+      "local_name": "MG-P1SR-12P",
+      "connectable": true
+    }
+  ],
+  "iot_class": "local_push",
+  "requirements": [],
+  "codeowners": [
+    "@highTowerSU"
+  ],
+  "documentation": "https://github.com/highTowerSU/mgroup-light#readme",
+  "issue_tracker": "https://github.com/highTowerSU/mgroup-light/issues"
+}

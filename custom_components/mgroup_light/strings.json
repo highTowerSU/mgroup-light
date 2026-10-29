@@ -1,0 +1,73 @@
+{
+  "title": "Mgroup Panel",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Select Mgroup panel",
+        "description": "Select a discovered panel or enter a Bluetooth address.",
+        "data": {
+          "device": "Panel"
+        }
+      },
+      "bluetooth_confirm": {
+        "title": "Connect Mgroup panel",
+        "description": "Set up the discovered MG-P1SR-12P? Its current state will be read without switching outputs."
+      },
+      "manual": {
+        "title": "Connect Mgroup panel",
+        "description": "Connect an MG-P1SR-12P via Bluetooth. Setup reads its status without switching outputs.",
+        "data": {
+          "address": "Bluetooth address"
+        }
+      },
+      "channels": {
+        "title": "Channel names",
+        "description": "Name the twelve channels. You can change these later in Configure. The hazard switch for channels 7 and 8 is added automatically.",
+        "data": {
+          "channel_1": "Channel 1",
+          "channel_2": "Channel 2",
+          "channel_3": "Channel 3",
+          "channel_4": "Channel 4",
+          "channel_5": "Channel 5",
+          "channel_6": "Channel 6",
+          "channel_7": "Channel 7",
+          "channel_8": "Channel 8",
+          "channel_9": "Channel 9",
+          "channel_10": "Channel 10",
+          "channel_11": "Channel 11",
+          "channel_12": "Channel 12"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the panel or read its status.",
+      "unsupported_device": "Only MG-P1SR-12P panels are supported.",
+      "invalid_address": "Enter a Bluetooth address in AA:BB:CC:DD:EE:FF format."
+    },
+    "abort": {
+      "already_configured": "This panel is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Channel names",
+        "description": "Labels are stored in Home Assistant. The panel and its operating modes are unchanged.",
+        "data": {
+          "channel_1": "Channel 1",
+          "channel_2": "Channel 2",
+          "channel_3": "Channel 3",
+          "channel_4": "Channel 4",
+          "channel_5": "Channel 5",
+          "channel_6": "Channel 6",
+          "channel_7": "Channel 7",
+          "channel_8": "Channel 8",
+          "channel_9": "Channel 9",
+          "channel_10": "Channel 10",
+          "channel_11": "Channel 11",
+          "channel_12": "Channel 12"
+        }
+      }
+    }
+  }
+}

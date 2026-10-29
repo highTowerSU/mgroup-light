@@ -1,0 +1,73 @@
+{
+  "title": "Mgroup Panel",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mgroup-Panel auswählen",
+        "description": "Ein gefundenes Panel auswählen oder eine Bluetooth-Adresse eingeben.",
+        "data": {
+          "device": "Panel"
+        }
+      },
+      "bluetooth_confirm": {
+        "title": "Mgroup-Panel verbinden",
+        "description": "Das gefundene MG-P1SR-12P einrichten? Der aktuelle Status wird gelesen, ohne Ausgänge zu schalten."
+      },
+      "manual": {
+        "title": "Mgroup-Panel verbinden",
+        "description": "MG-P1SR-12P über Bluetooth verbinden. Die Einrichtung liest den Status, ohne Ausgänge zu schalten.",
+        "data": {
+          "address": "Bluetooth-Adresse"
+        }
+      },
+      "channels": {
+        "title": "Kanalnamen",
+        "description": "Vergib Namen für die zwölf Kanäle. Du kannst sie später über Konfigurieren ändern. Der Warnblinker für Kanal 7 und 8 wird automatisch ergänzt.",
+        "data": {
+          "channel_1": "Kanal 1",
+          "channel_2": "Kanal 2",
+          "channel_3": "Kanal 3",
+          "channel_4": "Kanal 4",
+          "channel_5": "Kanal 5",
+          "channel_6": "Kanal 6",
+          "channel_7": "Kanal 7",
+          "channel_8": "Kanal 8",
+          "channel_9": "Kanal 9",
+          "channel_10": "Kanal 10",
+          "channel_11": "Kanal 11",
+          "channel_12": "Kanal 12"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Das Panel ist nicht erreichbar oder liefert keinen Status.",
+      "unsupported_device": "Unterstützt wird ausschließlich MG-P1SR-12P.",
+      "invalid_address": "Bitte die Bluetooth-Adresse im Format AA:BB:CC:DD:EE:FF eingeben."
+    },
+    "abort": {
+      "already_configured": "Dieses Panel ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kanalnamen",
+        "description": "Die Namen werden in Home Assistant gespeichert. Panel und Betriebsarten werden nicht verändert.",
+        "data": {
+          "channel_1": "Kanal 1",
+          "channel_2": "Kanal 2",
+          "channel_3": "Kanal 3",
+          "channel_4": "Kanal 4",
+          "channel_5": "Kanal 5",
+          "channel_6": "Kanal 6",
+          "channel_7": "Kanal 7",
+          "channel_8": "Kanal 8",
+          "channel_9": "Kanal 9",
+          "channel_10": "Kanal 10",
+          "channel_11": "Kanal 11",
+          "channel_12": "Kanal 12"
+        }
+      }
+    }
+  }
+}
