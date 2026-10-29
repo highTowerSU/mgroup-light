@@ -2,7 +2,7 @@
 
 Lokale Bluetooth-Integration für das **MG-P1SR-12P**. Zwölf Kanalschalter und ein gemeinsamer Warnblinker mit
 konfigurierbaren Kanalnamen, Zustandsrückmeldungen und Wiederverbindung.
-Aktuelles Installationspaket: [mgroup_light-0.4.1.zip](https://github.com/highTowerSU/mgroup-light/releases/download/v0.4.1/mgroup_light-0.4.1.zip).
+Aktuelles Installationspaket: [mgroup_light-0.4.2.zip](https://github.com/highTowerSU/mgroup-light/releases/download/v0.4.2/mgroup_light-0.4.2.zip).
 Getestetes Zielsystem: Home Assistant OS, Core 2026.10.4, lokaler Bluetooth-Adapter.
 Unterstützt wird das Modell MG-P1SR-12P mit zwölf Kanälen.
 
@@ -27,6 +27,12 @@ Bei Funkverlust werden die Entitäten als nicht verfügbar angezeigt.
 Fehlgeschlagene Schaltbefehle werden nicht automatisch wiederholt.
 Wird das Panel im passiven Scan nicht gefunden, fordert die Integration bei HA
 ein aktives Suchfenster ausschließlich für seine Adresse an (bis zu 25 Sekunden).
+
+Die Anzeigenamen bleiben kurz: **Blinker links**, **Warnblinker**,
+**Tastenbeleuchtung** und **Herunterfahren anfordern**. Der Gerätename wird
+nicht automatisch vorangestellt. Gerätezuordnung und eindeutige IDs bleiben
+erhalten. Bei bestehenden Installationen bleiben auch die Entitäts-IDs und
+selbst vergebenen Namen erhalten; ein Update benennt keine Automation-Ziele um.
 
 ## Betriebsarten und Beleuchtung
 
@@ -134,6 +140,10 @@ Den Ordner `custom_components/mgroup_light` aus dem Installationspaket nach
 Danach dieselbe Ersteinrichtung über **Geräte & Dienste** verwenden.
 Zum Entfernen den Integrationseintrag löschen, danach bei Bedarf den Ordner
 entfernen und HA neu starten. Das Panel wird beim Entladen nicht geschaltet.
+
+Der [ESP32-Entwurf](ESP32_PLAN.md) vergleicht eine Bluetooth-Brücke mit
+einem eigenständig arbeitenden Controller. Eine ESP-Firmware ist noch nicht
+Bestandteil dieser Integration.
 
 ## Prüfung
 

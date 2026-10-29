@@ -10,7 +10,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class MgroupShutdownButton(CoordinatorEntity, ButtonEntity):
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
     _attr_name = "Herunterfahren anfordern"
     _attr_icon = "mdi:power"
 

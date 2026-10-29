@@ -12,7 +12,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class MgroupModeSelect(CoordinatorEntity, SelectEntity):
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
     _attr_entity_category = EntityCategory.CONFIG
     _attr_translation_key = "channel_mode"
     _attr_options = list(MODE_OPTIONS)

@@ -10,7 +10,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class MgroupPanelLight(CoordinatorEntity, LightEntity):
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
     _attr_name = "Tastenbeleuchtung"
     _attr_supported_color_modes = {ColorMode.RGB}
     _attr_color_mode = ColorMode.RGB

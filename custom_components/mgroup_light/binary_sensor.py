@@ -32,8 +32,8 @@ class StromPiCoordinator(DataUpdateCoordinator[bool]):
 
 
 class StromPiSignal(CoordinatorEntity, BinarySensorEntity):
-    _attr_has_entity_name = True
-    _attr_name = "USV-Signal"
+    _attr_has_entity_name = False
+    _attr_name = "USV-Signal (StromPi 2)"
     _attr_icon = "mdi:power-plug-battery"
 
     def __init__(self, coordinator, address):

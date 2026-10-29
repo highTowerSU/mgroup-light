@@ -21,7 +21,7 @@ async def async_setup_entry(
 
 
 class MgroupBaseSwitch(CoordinatorEntity[MgroupCoordinator], SwitchEntity):
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
     _attr_icon = "mdi:toggle-switch"
 
     def __init__(self, coordinator: MgroupCoordinator, key: str, name: str) -> None:
